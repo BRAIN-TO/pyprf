@@ -717,7 +717,7 @@ def prf_stim(dicParam):
             if lgcOn:
 
 #############################################################################################
-                if aryDsg[idxVol, 1] < (7.0): # Check if the X location is higher or lower
+                if aryDsg[idxVol, 1] > (6.0): # Check if the X location is higher or lower
                     vertices = [(0, -1), (1, -1), (1, 1), (0, 1)] #right half draw only
                 else:
                     vertices = [(-1, -1), (0, -1), (0, 1), (-1, 1)] # left half draw only
