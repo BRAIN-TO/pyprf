@@ -33,6 +33,7 @@ This version: Non-square visual field coverage, i.e. bar stimuli all over the
 # 20260311 Lines 407-433 Create a colored grating bar for image stim.
 # 20260312 Lines 698-701 Create bichromatic color flicker (commented out).
 # 20260313 Skewed color grade changes using different stim functions.
+# 20260317 Change tile_size to be calculated from bar size in ## Generate new color texture (Yuexin)
 
 import os
 import argparse
@@ -407,7 +408,7 @@ def prf_stim(dicParam):
     # *** Stimuli
     ## Generate new color texture
     np.random.seed(13)
-    tile_size = 40
+    tile_size = int(tplBarSzePix[0] / tplBarSzePix[1] * 3)
     cols = varPixX // tile_size
     rows = int(varThckPix) // tile_size
     img_array = np.zeros((rows * tile_size, cols * tile_size, 3), dtype=np.uint8)
