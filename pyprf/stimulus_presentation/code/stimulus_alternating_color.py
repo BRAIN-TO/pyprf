@@ -24,7 +24,7 @@ This version: Non-square visual field coverage, i.e. bar stimuli all over the
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-# Modifications made by for BRAIN-TO Lab, University of Toronto
+# Modifications made for BRAIN-TO Lab, University of Toronto
 # 20260306 Lines 705-729 to present stimulus bar on a single side of the screen.
 #          Line 1171 to change save log file to match condition.
 # 20260310 Hemifield determination based on position of X-axis.
@@ -33,7 +33,7 @@ This version: Non-square visual field coverage, i.e. bar stimuli all over the
 # 20260311 Lines 407-433 Create a colored grating bar for image stim.
 # 20260312 Lines 698-701 Create bichromatic color flicker (commented out).
 # 20260313 Skewed color grade changes using different stim functions.
-# 20260317 Change tile_size to be calculated from bar size in (Yuexin).
+# 20260317 Change tile_size to be calculated from bar size in ## Generate new color texture (Yuexin)
 # 20260318 Change for tile size scaling and fill method.
 
 import os
@@ -1154,15 +1154,15 @@ if __name__ == "__main__":
     # https://doi.org/10.1146/annurev.ps.41.020190.003223
 
     # Dictionary with experiment parameters.
-    dicParam = {'Run (name of design matrix file)': 'Run_01',
+    dicParam = {'Run (name of design matrix file)': 'Hemianopsia_Run_01',
                 'Target duration [s]': 0.3,
                 'Logging mode': [False, True],
                 'Temporal frequency [Hz]': 4.0,
                 'Spatial frequency [cyc per bar]': 1.5,
-                'Distance between observer and monitor [cm]': 99.0,
-                'Width of monitor [cm]': 30.0,
-                'Width of monitor [pixels]': 1920,
-                'Height of monitor [pixels]': 1200,
+                'Distance between observer and monitor [cm]': 233.0,
+                'Width of monitor [cm]': 70.0,
+                'Width of monitor [pixels]': 1280,
+                'Height of monitor [pixels]': 800,
                 'Background colour [-1 to 1]': 0.0,
                 'Show fixation grid?': [True, False]}
 
@@ -1195,7 +1195,7 @@ if __name__ == "__main__":
         strPthOut = os.path.join(strPth,
                                  'log',
                                  (dicParam['Run (name of design matrix file)']
-                                  + '_mirror_'# CHANGE LOG FILE NAME
+                                  + '_alternating_'# CHANGE LOG FILE NAME
                                   + strDate
                                   + '.txt')
                                  )
