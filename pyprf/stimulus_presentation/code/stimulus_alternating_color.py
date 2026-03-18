@@ -24,7 +24,7 @@ This version: Non-square visual field coverage, i.e. bar stimuli all over the
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-# Modifications made by Darren Liang, for BRAIN-TO Lab, University of Toronto
+# Modifications made by for BRAIN-TO Lab, University of Toronto
 # 20260306 Lines 705-729 to present stimulus bar on a single side of the screen.
 #          Line 1171 to change save log file to match condition.
 # 20260310 Hemifield determination based on position of X-axis.
@@ -33,7 +33,8 @@ This version: Non-square visual field coverage, i.e. bar stimuli all over the
 # 20260311 Lines 407-433 Create a colored grating bar for image stim.
 # 20260312 Lines 698-701 Create bichromatic color flicker (commented out).
 # 20260313 Skewed color grade changes using different stim functions.
-# 20260317 Change tile_size to be calculated from bar size in ## Generate new color texture (Yuexin)
+# 20260317 Change tile_size to be calculated from bar size in (Yuexin).
+# 20260318 Change for tile size scaling and fill method.
 
 import os
 import argparse
@@ -408,22 +409,28 @@ def prf_stim(dicParam):
     # *** Stimuli
     ## Generate new color texture
     np.random.seed(13)
-    tile_size = int(tplBarSzePix[0] / tplBarSzePix[1] * 3)
-    cols = varPixX // tile_size
-    rows = int(varThckPix) // tile_size
-    img_array = np.zeros((rows * tile_size, cols * tile_size, 3), dtype=np.uint8)
-    colours = np.random.randint(0, 256, size=(rows, cols, 3)).astype(np.uint8)
-    for r in range(rows):
-        for c in range(cols):
-            img_array[r*tile_size:(r+1)*tile_size, c*tile_size:(c+1)*tile_size] = colours[r, c]
-    img_array_rgb = (colours.astype(np.float32) / 127.5) - 1.0  # -> [-1, 1]
+    sfPix = varBarSfPix            # cycles per pixel
+    SFpix = int((1.0 / (2.0 * sfPix)))
+    nX = tplBarSzePix[0]  // SFpix
+    nY = tplBarSzePix[1] // SFpix
+
+    tex = np.zeros((int(varThckPix), int(varPixX), 3)).astype(dtype=np.float32)
+    for iy in range(nY):
+        for ix in range(nX):
+            color = np.random.randint(0, 256, size=3)
+            color = (color / 127.5) - 1.0   # PsychoPy RGB range
+            y0 = iy * SFpix
+            y1 = (iy + 1) * SFpix
+            x0 = ix * SFpix
+            x1 = (ix + 1) * SFpix
+            tex[y0:y1, x0:x1, :] = color
 
     # Bar stimulus:
     objBar = visual.GratingStim(#ImageStim(
         objWin,
         contrast=1.0,
         pos=(0.0, 0.0),
-        tex=img_array_rgb,#'sqrXsqr',
+        tex=tex,#img_array_rgb,#'sqrXsqr',
 #        color=[1.0, 1.0, 1.0],
         colorSpace='rgb',
         opacity=1.0,

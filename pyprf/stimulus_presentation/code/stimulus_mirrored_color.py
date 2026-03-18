@@ -408,15 +408,21 @@ def prf_stim(dicParam):
     # *** Stimuli
     ## Generate new color texture
     np.random.seed(13)
-    tile_size = int(tplBarSzePix[0] / tplBarSzePix[1] * 3)
-    cols = varPixX // tile_size
-    rows = int(varThckPix) // tile_size
-    img_array = np.zeros((rows * tile_size, cols * tile_size, 3), dtype=np.uint8)
-    colours = np.random.randint(0, 256, size=(rows, cols, 3)).astype(np.uint8)
-    for r in range(rows):
-        for c in range(cols):
-            img_array[r*tile_size:(r+1)*tile_size, c*tile_size:(c+1)*tile_size] = colours[r, c]
-    img_array_rgb = (colours.astype(np.float32) / 127.5) - 1.0  # -> [-1, 1]
+    sfPix = varBarSfPix            # cycles per pixel
+    SFpix = int((1.0 / (2.0 * sfPix)))
+    nX = tplBarSzePix[0]  // SFpix
+    nY = tplBarSzePix[1] // SFpix
+
+    tex = np.zeros((int(varThckPix), int(varPixX), 3)).astype(dtype=np.float32)
+    for iy in range(nY):
+        for ix in range(nX):
+            color = np.random.randint(0, 256, size=3)
+            color = (color / 127.5) - 1.0   # PsychoPy RGB range
+            y0 = iy * SFpix
+            y1 = (iy + 1) * SFpix
+            x0 = ix * SFpix
+            x1 = (ix + 1) * SFpix
+            tex[y0:y1, x0:x1, :] = color
 
     # Bar stimulus:
     objBar = visual.GratingStim(#ImageStim(
