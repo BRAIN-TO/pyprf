@@ -29,12 +29,13 @@ This version: Non-square visual field coverage, i.e. bar stimuli all over the
 #          Line 1171 to change save log file to match condition.
 # 20260310 Hemifield determination based on position of X-axis.
 #          Lines 428-475 to change the Fixation Dot to a Fixation Cross.
-#          Lnes 758 & 787 to fix object type color change.
+#          Lines 758 & 787 to fix object type color change.
 # 20260311 Lines 407-433 Create a colored grating bar for image stim.
 # 20260312 Lines 698-701 Create bichromatic color flicker (commented out).
 # 20260313 Skewed color grade changes using different stim functions.
 # 20260317 Change tile_size to be calculated from bar size in ## Generate new color texture (Yuexin)
 # 20260318 Change for tile size scaling and fill method.
+# 20260715 Add fallback for all keys adding to hitrate.
 
 import os
 import argparse
@@ -216,7 +217,7 @@ def prf_stim(dicParam):
     varSwtRspLog = 0
 
     # The key that the participant has to press after a target event:
-    strTrgtKey = '1'
+    strTrgtKey = ['1','2','3','4']
 
     # Counter for correct/incorrect responses:
     varCntHit = 0  # Counter for hits
@@ -826,14 +827,14 @@ def prf_stim(dicParam):
             if (varSwtRspLog == 1) and (varTme02 <= (varTme03 + varHitTme)):
 
                 # Check for and log participant's response:
-                lstRsps = event.getKeys(keyList=[strTrgtKey],
+                lstRsps = event.getKeys(keyList=strTrgtKey,
                                         timeStamped=False)
 
                 # Check whether the list has the correct length:
                 if len(lstRsps) == 1:
 
                     # Does the list contain the response key?
-                    if lstRsps[0] == strTrgtKey:
+                    if lstRsps[0] in strTrgtKey:
 
                         # Log hit:
                         logging.data('Hit')
